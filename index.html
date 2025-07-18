@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISC Style Assessment</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light gray-blue background */
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
+        }
+        .question-card {
+            background-color: #f8fafc; /* Lighter background for question cards */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0; /* Subtle border */
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: 0.5rem;
+            border: 1px solid #cbd5e1; /* Default border */
+        }
+        .option-label:hover {
+            background-color: #e0f2fe; /* Light blue on hover */
+            border-color: #93c5fd; /* Darker blue border on hover */
+        }
+        input[type="radio"]:checked + .option-label {
+            background-color: #bfdbfe; /* Medium blue when checked */
+            border-color: #3b82f6; /* Stronger blue border when checked */
+            color: #1e40af; /* Darker text for checked state */
+            font-weight: 600;
+        }
+        input[type="radio"] {
+            margin-right: 0.75rem; /* Space between radio and text */
+            transform: scale(1.2); /* Slightly larger radio button */
+        }
+        .button-primary {
+            background-image: linear-gradient(to right, #3b82f6, #2563eb); /* Gradient button */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        }
+        .button-primary:hover {
+            background-image: linear-gradient(to right, #2563eb, #1d4ed8);
+            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        .result-card {
+            background-color: #e0f2fe; /* Light blue for results */
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid #93c5fd;
+            text-align: center;
+        }
+        .result-card h2 {
+            color: #1e40af; /* Dark blue heading */
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .result-card p {
+            color: #374151; /* Dark gray text */
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        .hidden {
+            display: none;
+        }
+        .message-box {
+            background-color: #fef3c7; /* Light yellow for warnings */
+            color: #92400e; /* Darker yellow text */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #fbbf24;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen py-8">
+    <div class="container">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">DISC Style Assessment</h1>
+        <p class="text-lg text-center text-gray-600 mb-8">
+            For each set of four words, choose the one that <strong>MOST</strong> describes you and the one that <strong>LEAST</strong> describes you.
+        </p>
+
+        <div id="message-box" class="message-box hidden" role="alert"></div>
+
+        <form id="disc-form">
+            <!-- Question Set 1 -->
+            <div class="question-card">
+                <p class="text-xl font-semibold text-gray-700 mb-4">Set 1:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Most like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="most1_d" name="q1_most" value="D" class="hidden">
+                            <label for="most1_d" class="option-label">Direct</label>
+                            <input type="radio" id="most1_i" name="q1_most" value="I" class="hidden">
+                            <label for="most1_i" class="option-label">Enthusiastic</label>
+                            <input type="radio" id="most1_s" name="q1_most" value="S" class="hidden">
+                            <label for="most1_s" class="option-label">Patient</label>
+                            <input type="radio" id="most1_c" name="q1_most" value="C" class="hidden">
+                            <label for="most1_c" class="option-label">Analytical</label>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Least like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="least1_d" name="q1_least" value="D" class="hidden">
+                            <label for="least1_d" class="option-label">Direct</label>
+                            <input type="radio" id="least1_i" name="q1_least" value="I" class="hidden">
+                            <label for="least1_i" class="option-label">Enthusiastic</label>
+                            <input type="radio" id="least1_s" name="q1_least" value="S" class="hidden">
+                            <label for="least1_s" class="option-label">Patient</label>
+                            <input type="radio" id="least1_c" name="q1_least" value="C" class="hidden">
+                            <label for="least1_c" class="option-label">Analytical</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Set 2 -->
+            <div class="question-card">
+                <p class="text-xl font-semibold text-gray-700 mb-4">Set 2:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Most like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="most2_d" name="q2_most" value="D" class="hidden">
+                            <label for="most2_d" class="option-label">Decisive</label>
+                            <input type="radio" id="most2_i" name="q2_most" value="I" class="hidden">
+                            <label for="most2_i" class="option-label">Sociable</label>
+                            <input type="radio" id="most2_s" name="q2_most" value="S" class="hidden">
+                            <label for="most2_s" class="option-label">Calm</label>
+                            <input type="radio" id="most2_c" name="q2_most" value="C" class="hidden">
+                            <label for="most2_c" class="option-label">Accurate</label>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Least like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="least2_d" name="q2_least" value="D" class="hidden">
+                            <label for="least2_d" class="option-label">Decisive</label>
+                            <input type="radio" id="least2_i" name="q2_least" value="I" class="hidden">
+                            <label for="least2_i" class="option-label">Sociable</label>
+                            <input type="radio" id="least2_s" name="q2_least" value="S" class="hidden">
+                            <label for="least2_s" class="option-label">Calm</label>
+                            <input type="radio" id="least2_c" name="q2_least" value="C" class="hidden">
+                            <label for="least2_c" class="option-label">Accurate</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Set 3 -->
+            <div class="question-card">
+                <p class="text-xl font-semibold text-gray-700 mb-4">Set 3:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Most like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="most3_d" name="q3_most" value="D" class="hidden">
+                            <label for="most3_d" class="option-label">Assertive</label>
+                            <input type="radio" id="most3_i" name="q3_most" value="I" class="hidden">
+                            <label for="most3_i" class="option-label">Charming</label>
+                            <input type="radio" id="most3_s" name="q3_most" value="S" class="hidden">
+                            <label for="most3_s" class="option-label">Good Listener</label>
+                            <input type="radio" id="most3_c" name="q3_most" value="C" class="hidden">
+                            <label for="most3_c" class="option-label">Detail-oriented</label>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Least like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="least3_d" name="q3_least" value="D" class="hidden">
+                            <label for="least3_d" class="option-label">Assertive</label>
+                            <input type="radio" id="least3_i" name="q3_least" value="I" class="hidden">
+                            <label for="least3_i" class="option-label">Charming</label>
+                            <input type="radio" id="least3_s" name="q3_least" value="S" class="hidden">
+                            <label for="least3_s" class="option-label">Good Listener</label>
+                            <input type="radio" id="least3_c" name="q3_least" value="C" class="hidden">
+                            <label for="least3_c" class="option-label">Detail-oriented</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Set 4 -->
+            <div class="question-card">
+                <p class="text-xl font-semibold text-gray-700 mb-4">Set 4:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Most like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="most4_d" name="q4_most" value="D" class="hidden">
+                            <label for="most4_d" class="option-label">Competitive</label>
+                            <input type="radio" id="most4_i" name="q4_most" value="I" class="hidden">
+                            <label for="most4_i" class="option-label">Optimistic</label>
+                            <input type="radio" id="most4_s" name="q4_most" value="S" class="hidden">
+                            <label for="most4_s" class="option-label">Loyal</label>
+                            <input type="radio" id="most4_c" name="q4_most" value="C" class="hidden">
+                            <label for="most4_c" class="option-label">Logical</label>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Least like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="least4_d" name="q4_least" value="D" class="hidden">
+                            <label for="least4_d" class="option-label">Competitive</label>
+                            <input type="radio" id="least4_i" name="q4_least" value="I" class="hidden">
+                            <label for="least4_i" class="option-label">Optimistic</label>
+                            <input type="radio" id="least4_s" name="q4_least" value="S" class="hidden">
+                            <label for="least4_s" class="option-label">Loyal</label>
+                            <input type="radio" id="least4_c" name="q4_least" value="C" class="hidden">
+                            <label for="least4_c" class="option-label">Logical</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Set 5 -->
+            <div class="question-card">
+                <p class="text-xl font-semibold text-gray-700 mb-4">Set 5:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Most like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="most5_d" name="q5_most" value="D" class="hidden">
+                            <label for="most5_d" class="option-label">Problem-solver</label>
+                            <input type="radio" id="most5_i" name="q5_most" value="I" class="hidden">
+                            <label for="most5_i" class="option-label">Persuasive</label>
+                            <input type="radio" id="most5_s" name="q5_most" value="S" class="hidden">
+                            <label for="most5_s" class="option-label">Team Player</label>
+                            <input type="radio" id="most5_c" name="q5_most" value="C" class="hidden">
+                            <label for="most5_c" class="option-label">Systematic</label>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-600 mb-2">Least like me:</p>
+                        <div class="space-y-2">
+                            <input type="radio" id="least5_d" name="q5_least" value="D" class="hidden">
+                            <label for="least5_d" class="option-label">Problem-solver</label>
+                            <input type="radio" id="least5_i" name="q5_least" value="I" class="hidden">
+                            <label for="least5_i" class="option-label">Persuasive</label>
+                            <input type="radio" id="least5_s" name="q5_least" value="S" class="hidden">
+                            <label for="least5_s" class="option-label">Team Player</label>
+                            <input type="radio" id="least5_c" name="q5_least" value="C" class="hidden">
+                            <label for="least5_c" class="option-label">Systematic</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button type="submit" class="button-primary">Get My DISC Style</button>
+            </div>
+        </form>
+
+        <div id="results" class="result-card hidden">
+            <h2 class="text-3xl font-bold mb-4">Your DISC Style: <span id="disc-type"></span></h2>
+            <p id="disc-description" class="text-lg"></p>
+            <div class="mt-6 text-gray-700 text-sm">
+                <p><strong>D (Dominance):</strong> Direct, results-oriented, firm, strong-willed, forceful.</p>
+                <p><strong>I (Influence):</strong> Outgoing, enthusiastic, optimistic, high-spirited, lively.</p>
+                <p><strong>S (Steadiness):</strong> Even-tempered, accommodating, patient, humble, tactful.</p>
+                <p><strong>C (Conscientiousness):</strong> Analytical, reserved, precise, private, accurate.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('disc-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const scores = { D: 0, I: 0, S: 0, C: 0 };
+            const numQuestions = 5; // Number of question sets
+            const messageBox = document.getElementById('message-box');
+            messageBox.classList.add('hidden'); // Hide previous messages
+
+            let allAnswered = true;
+            let hasConflict = false;
+
+            for (let i = 1; i <= numQuestions; i++) {
+                const mostSelected = document.querySelector(`input[name="q${i}_most"]:checked`);
+                const leastSelected = document.querySelector(`input[name="q${i}_least"]:checked`);
+
+                if (!mostSelected || !leastSelected) {
+                    allAnswered = false;
+                    break;
+                }
+
+                // Ensure 'most' and 'least' selections are not the same for a given question set
+                if (mostSelected.value === leastSelected.value) {
+                    hasConflict = true;
+                    break;
+                }
+
+                scores[mostSelected.value]++;
+                scores[leastSelected.value]--;
+            }
+
+            if (!allAnswered) {
+                messageBox.textContent = 'Please answer all questions before submitting.';
+                messageBox.classList.remove('hidden');
+                document.getElementById('results').classList.add('hidden'); // Hide results if incomplete
+                return;
+            }
+
+            if (hasConflict) {
+                messageBox.textContent = 'Please select different options for "Most" and "Least" in each set.';
+                messageBox.classList.remove('hidden');
+                document.getElementById('results').classList.add('hidden'); // Hide results if conflict
+                return;
+            }
+
+            // Determine the primary DISC style
+            let maxScore = -Infinity;
+            let primaryStyle = '';
+            // let multiplePrimary = false; // This variable is not strictly needed for the current tie-breaking logic
+
+            for (const style in scores) {
+                if (scores[style] > maxScore) {
+                    maxScore = scores[style];
+                    primaryStyle = style;
+                    // multiplePrimary = false;
+                }
+                // else if (scores[style] === maxScore) {
+                //     multiplePrimary = true;
+                // }
+            }
+
+            // Handle cases with ties or close scores to suggest a blend
+            let resultType = '';
+            let resultDescription = '';
+
+            const sortedScores = Object.entries(scores).sort(([, scoreA], [, scoreB]) => scoreB - scoreA);
+
+            // If the top two scores are equal, suggest a blend
+            if (sortedScores.length >= 2 && sortedScores[0][1] === sortedScores[1][1]) {
+                const style1 = sortedScores[0][0];
+                const style2 = sortedScores[1][0];
+                resultType = `${getStyleName(style1)}-${getStyleName(style2)} Blend`; // Use full names for blend
+                resultDescription = `You exhibit characteristics of both the ${getStyleName(style1)} and ${getStyleName(style2)} styles. This means you likely possess a mix of their traits and adapt well to situations requiring both.`;
+            } else {
+                // Otherwise, a clear primary style
+                resultType = getStyleName(primaryStyle);
+                resultDescription = getStyleDescription(primaryStyle);
+            }
+
+            // Display results
+            document.getElementById('disc-type').textContent = resultType;
+            document.getElementById('disc-description').textContent = resultDescription;
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' }); // Scroll to results
+        });
+
+        function getStyleName(styleCode) {
+            switch (styleCode) {
+                case 'D': return 'Dominance';
+                case 'I': return 'Influence';
+                case 'S': return 'Steadiness';
+                case 'C': return 'Conscientiousness';
+                default: return 'Unknown';
+            }
+        }
+
+        function getStyleDescription(styleCode) {
+            switch (styleCode) {
+                case 'D':
+                    return 'You tend to be direct, results-oriented, and decisive. You thrive on challenges and are focused on achieving goals. You may be seen as assertive and confident.';
+                case 'I':
+                    return 'You are likely enthusiastic, optimistic, and sociable. You enjoy interacting with others, influencing them, and are often seen as lively and persuasive.';
+                case 'S':
+                    return 'You are typically calm, patient, and a good listener. You value stability, cooperation, and are often seen as supportive and reliable. You prefer a steady pace.';
+                case 'C':
+                    return 'You tend to be analytical, precise, and detail-oriented. You value accuracy, logic, and systematic approaches. You are often seen as thoughtful and conscientious.';
+                default:
+                    return 'Unable to determine a primary DISC style. Please ensure all questions are answered.';
+            }
+        }
+
+        // Add event listeners to labels to toggle radio button checked state visually
+        document.querySelectorAll('.option-label').forEach(label => {
+            label.addEventListener('click', function() {
+                const radio = document.getElementById(this.htmlFor);
+                if (radio) {
+                    radio.checked = true;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
